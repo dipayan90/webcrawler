@@ -26,3 +26,7 @@ should launch the UI thats should take in the URL and the category.
 #DB Access
 
 Currently uses HSQLDB, app can easily be configured to run with postgres, Mysql or other databases, by just modifyig the application.properties file.
+
+#DEMO Link
+
+http://sendvid.com/wvmzvanr
