@@ -28,20 +28,22 @@ public class WebSiteFrequencyCounter {
 
     private static final String HTTP_STRING = "http://";
 
+    private static final String ELEMENT_TYPE = "WORD";
+
     @Resource
     SiteInfoRepository siteInfoRepository;
 
-    public SiteInfo getFrequency(String url) throws IOException {
+    public SiteInfo getFrequency(String url,String category) throws IOException {
         SiteInfo siteStats = siteInfoRepository.findByUrl(url);
         if(siteStats == null){
 
             Map<String,Long> wordCounts = getWordCounts(url);
             Set<SiteElementFrequency> frequencySet = wordCounts.entrySet()
                     .stream()
-                    .map(entry -> new SiteElementFrequency(entry.getKey(),entry.getValue(),"WORD"))
+                    .map(entry -> new SiteElementFrequency(entry.getKey(),entry.getValue(),ELEMENT_TYPE))
                     .collect(Collectors.toSet());
 
-            siteStats = new SiteInfo(url,"News",frequencySet);
+            siteStats = new SiteInfo(url,category,frequencySet);
             siteInfoRepository.save(siteStats);
         }
 

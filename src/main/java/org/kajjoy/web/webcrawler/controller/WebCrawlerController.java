@@ -18,8 +18,8 @@ public class WebCrawlerController {
     private WebSiteFrequencyCounter webSiteFrequencyCounter;
 
     @RequestMapping("/crawl")
-    public SiteInfo getWordFrequencyCount(@RequestParam String url) throws IOException {
-        return webSiteFrequencyCounter.getFrequency(url);
+    public SiteInfo getWordFrequencyCount(@RequestParam String url,@RequestParam String category) throws IOException {
+        return webSiteFrequencyCounter.getFrequency(url,category);
     }
 
 }
