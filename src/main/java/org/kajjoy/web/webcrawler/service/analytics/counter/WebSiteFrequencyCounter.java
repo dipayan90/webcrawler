@@ -2,16 +2,21 @@ package org.kajjoy.web.webcrawler.service.analytics.counter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.kajjoy.web.webcrawler.repository.SiteWordFrequencyRepository;
+import org.kajjoy.web.webcrawler.vo.SiteElementFrequency;
+import org.kajjoy.web.webcrawler.vo.SiteInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -23,7 +28,22 @@ public class WebSiteFrequencyCounter {
 
     private static final String HTTP_STRING = "http://";
 
+    @Resource
+    SiteWordFrequencyRepository wordFrequencyRepository;
+
     public Map<String,Long> getFrequency(String url) throws IOException {
+        SiteInfo siteStats = wordFrequencyRepository.findByUrl(url);
+        if(siteStats == null){
+            Map<String,Long> wordCounts = getWordCounts(url);
+            Set<SiteElementFrequency> frequencySet = wordCounts.entrySet()
+                    .stream()
+                    .map(entry -> new SiteElementFrequency(entry.getKey(),entry.getValue(),"News"))
+                    .collect(Collectors.toSet());
+        }
+       return getWordCounts(url);
+    }
+
+    private Map<String,Long> getWordCounts(String url) throws IOException {
         Assert.notNull(url);
         Document websiteDoc;
         if(!url.contains(HTTP_STRING)){
@@ -41,7 +61,7 @@ public class WebSiteFrequencyCounter {
         for(String line: lines){
             String[] words = line.split("\\W+");
             Map<String, Long> collect = Arrays.asList(words).stream().collect(groupingBy(Function.identity(), counting()));
-            collect.entrySet().stream().forEach(e -> logger.info("Key: "+ e.getKey() + "Value : "+ e.getValue() ));
+            collect.entrySet().forEach(e -> logger.info("Key: "+ e.getKey() + "Value : "+ e.getValue() ));
             result.putAll(collect);
         }
         return result;
