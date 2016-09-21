@@ -4,6 +4,7 @@ package org.kajjoy.web.webcrawler.vo;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -14,6 +15,8 @@ public class SiteElementFrequency {
     @ManyToOne
     @JoinColumn(name = "site_info_id")
     private Long site_id;
+    @Id
+    private Long id;
     private String key;
     private Long value;
     private String type;

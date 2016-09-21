@@ -21,9 +21,10 @@ public class SiteInfo implements Serializable {
 
     protected SiteInfo(){};
 
-    protected SiteInfo(String url,String category){
+    public SiteInfo(String url, String category, Set<SiteElementFrequency> siteElementFrequencies){
         this.url = url;
         this.category = category;
+        this.siteElementFrequencies = siteElementFrequencies;
     }
 
     @Override

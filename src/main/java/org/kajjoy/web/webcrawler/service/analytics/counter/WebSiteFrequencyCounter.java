@@ -31,16 +31,18 @@ public class WebSiteFrequencyCounter {
     @Resource
     SiteWordFrequencyRepository wordFrequencyRepository;
 
-    public Map<String,Long> getFrequency(String url) throws IOException {
+    public SiteInfo getFrequency(String url) throws IOException {
         SiteInfo siteStats = wordFrequencyRepository.findByUrl(url);
         if(siteStats == null){
             Map<String,Long> wordCounts = getWordCounts(url);
             Set<SiteElementFrequency> frequencySet = wordCounts.entrySet()
                     .stream()
-                    .map(entry -> new SiteElementFrequency(entry.getKey(),entry.getValue(),"News"))
+                    .map(entry -> new SiteElementFrequency(entry.getKey(),entry.getValue(),"WORD"))
                     .collect(Collectors.toSet());
+            siteStats = new SiteInfo(url,"News",frequencySet);
+            wordFrequencyRepository.save(siteStats);
         }
-       return getWordCounts(url);
+        return siteStats;
     }
 
     private Map<String,Long> getWordCounts(String url) throws IOException {
