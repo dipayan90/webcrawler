@@ -50,7 +50,7 @@ public class WebSiteFrequencyCounter {
         return siteStats;
     }
 
-    private Map<String,Long> getWordCounts(String url) throws IOException {
+    protected Map<String,Long> getWordCounts(String url) throws IOException {
         Assert.notNull(url);
         Document websiteDoc;
         if(!url.contains(HTTP_STRING)){
@@ -59,10 +59,13 @@ public class WebSiteFrequencyCounter {
             websiteDoc = Jsoup.connect(url).get();
         }
         String text = websiteDoc.text();
+
         List<String> lines =  textToLines(text);
+        return counter(lines);
+    }
 
+    protected Map<String,Long> counter(List<String> lines){
         Map<String,Long> result = new HashMap<>();
-
         for(String line: lines){
             String[] words = line.split("\\W+");
             Map<String, Long> collect = Arrays.asList(words).stream().collect(groupingBy(Function.identity(), counting()));
@@ -72,7 +75,7 @@ public class WebSiteFrequencyCounter {
     }
 
 
-    private static List<String> textToLines(String text) {
+    protected List<String> textToLines(String text) {
         List<String> result = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new StringReader(text))) {
             String line = reader.readLine();

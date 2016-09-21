@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Data
 @ToString
-public class SiteInfo implements Serializable {
+public class SiteInfo extends AbstractTimeStamp implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +21,7 @@ public class SiteInfo implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, targetEntity = SiteElementFrequency.class)
     private Set<SiteElementFrequency> siteElementFrequencySet;
 
-    protected SiteInfo(){
+    public SiteInfo(){
 
     }
 
