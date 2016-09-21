@@ -16,9 +16,8 @@ angular.module('webCrawler', [])
         $scope.submit = function(){
               $scope.requestType = "specific dates request";
               $http.get(constructUrl($scope.url)).then(function(data){
-                  alert(data)
                   $scope.showFeedback = true;
-                  $scope.feedback = data;
+                  $scope.feedback = data.data;
               },function(error){
                   alert(error)
                   $scope.showFeedback = true;

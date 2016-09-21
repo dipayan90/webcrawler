@@ -54,8 +54,6 @@ public class WebSiteFrequencyCounter {
             websiteDoc = Jsoup.connect(url).get();
         }
         String text = websiteDoc.text();
-        logger.info("Text is: " + text);
-
         List<String> lines =  textToLines(text);
 
         Map<String,Long> result = new HashMap<>();
@@ -63,7 +61,6 @@ public class WebSiteFrequencyCounter {
         for(String line: lines){
             String[] words = line.split("\\W+");
             Map<String, Long> collect = Arrays.asList(words).stream().collect(groupingBy(Function.identity(), counting()));
-            collect.entrySet().forEach(e -> logger.info("Key: "+ e.getKey() + "Value : "+ e.getValue() ));
             result.putAll(collect);
         }
         return result;

@@ -16,10 +16,13 @@ public class SiteInfo implements Serializable {
     private Long id;
     private String url;
     private String category;
-    @OneToMany(mappedBy = "bookCategory", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "siteInfo", cascade = CascadeType.ALL)
     private Set<SiteElementFrequency> siteElementFrequencies;
 
-    protected SiteInfo(){};
+    protected SiteInfo(){
+
+    }
 
     public SiteInfo(String url, String category, Set<SiteElementFrequency> siteElementFrequencies){
         this.url = url;
@@ -36,7 +39,7 @@ public class SiteInfo implements Serializable {
             for(SiteElementFrequency frequency : siteElementFrequencies) {
                 result += String.format(
                         "SiteElementFrequency[site_id=%d, key='%s', value='%s', type='%s']",
-                        frequency.getSite_id(), frequency.getKey(), frequency.getValue(),frequency.getType());
+                        frequency.getSiteInfo().getId(), frequency.getKey(), frequency.getValue(),frequency.getType());
             }
         }
 

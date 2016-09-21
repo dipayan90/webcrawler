@@ -14,6 +14,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
     <script src="js/batchJobsViewController.js"></script>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,8 +51,18 @@
     <button type="submit" class="btn btn-default">Submit</button>
 </form>
 
-    <div ng-show="showFeedback">
-        <h1 style="text-align: center">Result is : {{feedback}}</h1>
+    <div ng-show="showFeedback" style="width: 60%;margin-left: 20%;margin-right: 20%;">
+        <h3>Site Url: {{feedback.url}}</h3>
+        <table>
+            <tr>
+                <th>Word</th>
+                <th>Count</th>
+            </tr>
+            <tr ng-repeat="word in feedback.siteElementFrequencies | orderBy:'-value'">
+                <td>{{word.key}}</td>
+                <td>{{word.value}}</td>
+            </tr>
+        </table>
     </div>
 </div>
 
