@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 public class WebCrawlerController {
@@ -16,9 +17,8 @@ public class WebCrawlerController {
     private WebSiteFrequencyCounter webSiteFrequencyCounter;
 
     @RequestMapping("/crawl")
-    public String hello(@RequestParam String url) throws IOException {
-        webSiteFrequencyCounter.getFrequency(url);
-        return url;
+    public Map<String,Long> getWordFrequencyCount(@RequestParam String url) throws IOException {
+        return webSiteFrequencyCounter.getFrequency(url);
     }
 
 }

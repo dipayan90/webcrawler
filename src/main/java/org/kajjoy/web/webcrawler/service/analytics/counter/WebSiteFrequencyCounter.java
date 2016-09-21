@@ -10,10 +10,7 @@ import org.springframework.util.Assert;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.counting;
@@ -26,7 +23,7 @@ public class WebSiteFrequencyCounter {
 
     private static final String HTTP_STRING = "http://";
 
-    public Map<String,Integer> getFrequency(String url) throws IOException {
+    public Map<String,Long> getFrequency(String url) throws IOException {
         Assert.notNull(url);
         Document websiteDoc;
         if(!url.contains(HTTP_STRING)){
@@ -39,13 +36,15 @@ public class WebSiteFrequencyCounter {
 
         List<String> lines =  textToLines(text);
 
+        Map<String,Long> result = new HashMap<>();
+
         for(String line: lines){
             String[] words = line.split("\\W+");
             Map<String, Long> collect = Arrays.asList(words).stream().collect(groupingBy(Function.identity(), counting()));
             collect.entrySet().stream().forEach(e -> logger.info("Key: "+ e.getKey() + "Value : "+ e.getValue() ));
+            result.putAll(collect);
         }
-
-        return null;
+        return result;
     }
 
 
