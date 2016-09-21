@@ -10,11 +10,6 @@ import javax.persistence.*;
 @Data
 public class SiteElementFrequency {
 
-    @ManyToOne
-    @JoinColumn(name = "site_info_id", insertable = false, updatable = false)
-    @JsonIgnore
-    private SiteInfo siteInfo;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -31,13 +26,6 @@ public class SiteElementFrequency {
         this.key = key;
         this.value = value;
         this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-                "SiteElementFrequency[site_id=%d, key='%s', value='%s', type='%s']",
-                siteInfo.getId(), key, value,type);
     }
 
 }

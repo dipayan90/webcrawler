@@ -1,14 +1,15 @@
 package org.kajjoy.web.webcrawler.vo;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "site_info")
 @Data
+@ToString
 public class SiteInfo implements Serializable {
 
     @Id
@@ -17,33 +18,17 @@ public class SiteInfo implements Serializable {
     private String url;
     private String category;
 
-    @OneToMany(mappedBy = "siteInfo", cascade = CascadeType.ALL)
-    private Set<SiteElementFrequency> siteElementFrequencies;
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = SiteElementFrequency.class)
+    private Set<SiteElementFrequency> siteElementFrequencySet;
 
     protected SiteInfo(){
 
     }
 
-    public SiteInfo(String url, String category, Set<SiteElementFrequency> siteElementFrequencies){
+    public SiteInfo(String url, String category, Set<SiteElementFrequency> siteElementFrequencySet){
         this.url = url;
         this.category = category;
-        this.siteElementFrequencies = siteElementFrequencies;
-    }
-
-    @Override
-    public String toString() {
-        String result = String.format(
-                "Category[id=%d, url='%s', category='%s']%n",
-                id, url,category);
-        if (siteElementFrequencies != null) {
-            for(SiteElementFrequency frequency : siteElementFrequencies) {
-                result += String.format(
-                        "SiteElementFrequency[site_id=%d, key='%s', value='%s', type='%s']",
-                        frequency.getSiteInfo().getId(), frequency.getKey(), frequency.getValue(),frequency.getType());
-            }
-        }
-
-        return result;
+        this.siteElementFrequencySet = siteElementFrequencySet;
     }
 
 }

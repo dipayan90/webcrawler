@@ -58,7 +58,7 @@
                 <th>Word</th>
                 <th>Count</th>
             </tr>
-            <tr ng-repeat="word in feedback.siteElementFrequencies | orderBy:'-value'">
+            <tr ng-repeat="word in feedback.siteElementFrequencySet | orderBy:'-value'">
                 <td>{{word.key}}</td>
                 <td>{{word.value}}</td>
             </tr>

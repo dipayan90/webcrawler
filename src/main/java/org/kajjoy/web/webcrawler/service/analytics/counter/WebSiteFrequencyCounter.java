@@ -2,7 +2,7 @@ package org.kajjoy.web.webcrawler.service.analytics.counter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.kajjoy.web.webcrawler.repository.SiteWordFrequencyRepository;
+import org.kajjoy.web.webcrawler.repository.SiteInfoRepository;
 import org.kajjoy.web.webcrawler.vo.SiteElementFrequency;
 import org.kajjoy.web.webcrawler.vo.SiteInfo;
 import org.slf4j.Logger;
@@ -29,19 +29,22 @@ public class WebSiteFrequencyCounter {
     private static final String HTTP_STRING = "http://";
 
     @Resource
-    SiteWordFrequencyRepository wordFrequencyRepository;
+    SiteInfoRepository siteInfoRepository;
 
     public SiteInfo getFrequency(String url) throws IOException {
-        SiteInfo siteStats = wordFrequencyRepository.findByUrl(url);
+        SiteInfo siteStats = siteInfoRepository.findByUrl(url);
         if(siteStats == null){
+
             Map<String,Long> wordCounts = getWordCounts(url);
             Set<SiteElementFrequency> frequencySet = wordCounts.entrySet()
                     .stream()
                     .map(entry -> new SiteElementFrequency(entry.getKey(),entry.getValue(),"WORD"))
                     .collect(Collectors.toSet());
+
             siteStats = new SiteInfo(url,"News",frequencySet);
-            wordFrequencyRepository.save(siteStats);
+            siteInfoRepository.save(siteStats);
         }
+
         return siteStats;
     }
 
