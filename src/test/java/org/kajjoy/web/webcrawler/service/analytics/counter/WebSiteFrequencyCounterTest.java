@@ -46,14 +46,14 @@ public class WebSiteFrequencyCounterTest {
     @Test
     public void testSaveToDB() throws IOException {
         Mockito.when(siteInfoRepository.findByUrl(Mockito.anyString())).thenReturn(null);
-        frequencyCounter.getFrequency("google.com","news");
+        frequencyCounter.getFrequency("http://www.google.com","news");
         Mockito.verify(siteInfoRepository,Mockito.times(1)).save(Mockito.any(SiteInfo.class));
     }
 
     @Test
     public void testGetFromDB() throws IOException {
         Mockito.when(siteInfoRepository.findByUrl(Mockito.anyString())).thenReturn(new SiteInfo());
-        frequencyCounter.getFrequency("google.com","news");
+        frequencyCounter.getFrequency("http://www.google.com","news");
         Mockito.verify(siteInfoRepository,Mockito.times(0)).save(Mockito.any(SiteInfo.class));
     }
 

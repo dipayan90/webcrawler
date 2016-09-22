@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -26,14 +27,16 @@ public class WebSiteFrequencyCounter {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSiteFrequencyCounter.class);
 
-    private static final String HTTP_STRING = "http://";
-
     private static final String ELEMENT_TYPE = "WORD";
 
     @Resource
     SiteInfoRepository siteInfoRepository;
 
     public SiteInfo getFrequency(String url,String category) throws IOException {
+        Assert.notNull(url);
+        // Validate if its a correct url if not throw exception
+        URL validUrl = new URL(url);
+        // find if data exists in DB
         SiteInfo siteStats = siteInfoRepository.findByUrl(url);
         if(siteStats == null){
 
@@ -51,15 +54,9 @@ public class WebSiteFrequencyCounter {
     }
 
     protected Map<String,Long> getWordCounts(String url) throws IOException {
-        Assert.notNull(url);
         Document websiteDoc;
-        if(!url.contains(HTTP_STRING)){
-            websiteDoc  = Jsoup.connect(HTTP_STRING + url).get();
-        }else{
-            websiteDoc = Jsoup.connect(url).get();
-        }
+        websiteDoc = Jsoup.connect(url).get();
         String text = websiteDoc.text();
-
         List<String> lines =  textToLines(text);
         return counter(lines);
     }
