@@ -1,4 +1,4 @@
-FROM	java8
+FROM	java:8
 ADD     target/webcrawler*.war /home/default/webcrawler.war
 
 EXPOSE 8080

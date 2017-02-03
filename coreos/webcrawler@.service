@@ -1,0 +1,17 @@
+[Unit]
+Description=webcrawler
+Requires=docker.service
+After=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+KillMode=none
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill webcrawler
+ExecStartPre=-/usr/bin/docker rm webcrawler
+ExecStartPre=/usr/bin/docker pull dipayan90/webcrawler
+ExecStart=/usr/bin/docker run --rm --name webcrawler --label maintainer="dipayan90@gmail.com" -p 8080 -e ENVNAME=${ENVNAME} -e SERVICE_IGNORE=true -e HOST_IP=${COREOS_PUBLIC_IPV4} dipayan90/webcrawler
+ExecStop=/usr/bin/docker stop webcrawler
+
+[X-Fleet]
+X-Conflicts=contrived-service-*.service
