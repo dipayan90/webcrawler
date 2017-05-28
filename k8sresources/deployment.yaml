@@ -1,0 +1,16 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: webcrawler-deployment
+spec:
+  replicas: 3 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: webcrawler
+    spec:
+      containers:
+      - name: webcrawler
+        image: dipayan90/webcrawler
+        ports:
+        - containerPort: 8080

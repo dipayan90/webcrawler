@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: webcrawler-ingress
+spec:
+  rules:
+  - host: kajjoykube.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: webcrawler-service
+          servicePort: 80
